@@ -8,17 +8,20 @@ i=0
 splitdirection="v"
 for addr in `echo $addresses`; do
     if [ "$i" -gt 0 ]; then
-        tmux split-window -"$splitdirection"
+        tmux split-window -"$splitdirection" 2>/dev/null
+        if [ "$?" -ne 0 ]; then
+            tmux select-layout tiled
+            tmux split-window -"$splitdirection"
+        fi
         if [ "$splitdirection" == "v" ]; then
             splitdirection="h"
         else
             splitdirection="v"
         fi
-    else
-        tmux select-pane -t "$i"
     fi
     tmux send-keys "echo ssh $addr" C-m
     i=$((i+1))
 done
 
+tmux select-layout tiled
 tmux setw synchronize-panes
