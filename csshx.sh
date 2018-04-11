@@ -19,7 +19,7 @@ for addr in `echo $addresses`; do
             splitdirection="v"
         fi
     fi
-    tmux send-keys "echo ssh $addr" C-m
+    tmux send-keys "ssh $addr" C-m
     i=$((i+1))
 done
 
